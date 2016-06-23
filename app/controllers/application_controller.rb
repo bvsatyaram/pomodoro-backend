@@ -1,7 +1,10 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
+
   protect_from_forgery with: :exception
+  skip_before_filter :verify_authenticity_token
+
   before_filter :add_allow_credentials_headers
 
   def add_allow_credentials_headers
@@ -11,7 +14,8 @@ class ApplicationController < ActionController::Base
     # (using 'withCredentials' in the XMLHttpRequest), we need to add some headers so
     # the browser will not reject the response
     response.headers['Access-Control-Allow-Origin'] = request.headers['Origin'] || '*'
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, DELETE'
+    # response.headers['Access-Control-Allow-Credentials'] = 'true'
   end
 
   def options
